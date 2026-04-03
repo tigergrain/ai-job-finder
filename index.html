@@ -633,15 +633,32 @@
     btnText.textContent = 'Launching AI Agent…';
     btnArrow.style.display = 'none';
 
-    const formData = new FormData();
-    formData.append('Full_Name', document.getElementById('fullName').value);
-    formData.append('Email', document.getElementById('emailAddr').value);
-    formData.append('Title', document.getElementById('jobTitle').value);
-    formData.append('Country', document.getElementById('country').value);
-    formData.append('Location', document.getElementById('location').value);
-    formData.append('Your_Resume', document.getElementById('resumeFile').files[0]);
+    // Read PDF as base64 — works reliably across all browsers with webhooks
+    const file = document.getElementById('resumeFile').files[0];
+    const base64 = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
 
-    try { await fetch(WORKFLOW_URL, { method: 'POST', body: formData }); } catch(err) { console.warn(err); }
+    const payload = {
+      Full_Name: document.getElementById('fullName').value,
+      Email: document.getElementById('emailAddr').value,
+      Title: document.getElementById('jobTitle').value,
+      Country: document.getElementById('country').value,
+      Location: document.getElementById('location').value,
+      Resume_Filename: file.name,
+      Resume_Base64: base64
+    };
+
+    try {
+      await fetch(WORKFLOW_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch(err) { console.warn(err); }
 
     const name = document.getElementById('fullName').value.split(' ')[0];
     const email = document.getElementById('emailAddr').value;
