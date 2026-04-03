@@ -8,7 +8,6 @@
 <style>
   :root {
     --bg: #f0ebe3;
-    --bg2: #e8e1d7;
     --card: #1c1f2e;
     --card2: #151726;
     --border: rgba(255,255,255,0.08);
@@ -17,11 +16,8 @@
     --green: #68d391;
     --text: #e2e8f0;
     --muted: #718096;
-    --glow: rgba(99,179,237,0.25);
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
@@ -29,10 +25,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow-x: hidden;
     padding: 48px 20px;
   }
-
   body::before {
     content: '';
     position: fixed;
@@ -42,460 +36,206 @@
     pointer-events: none;
     z-index: 0;
   }
-
   .wrapper {
     position: relative;
     z-index: 1;
     width: 100%;
     max-width: 680px;
-    /* FIX 1: Ensure wrapper is truly centered */
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-  }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 12px 40px;
-    font-size: 13px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0;
-    animation: fadeDown 0.6s ease both;
-    min-width: 380px;
-    justify-content: center;
-    font-weight: 500;
-  }
-
-  .badge-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 32px;
-  }
-
-  .badge-dot {
-    width: 6px;
-    height: 6px;
-    background: var(--green);
-    border-radius: 50%;
-    animation: pulse 2s ease infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-
-  /* FIX 1: Header fully centered */
-  .header {
-    margin-bottom: 48px;
-    animation: fadeDown 0.6s 0.1s ease both;
-    text-align: center;
-    width: 100%;
-  }
-
-  .header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.4rem, 6vw, 3.6rem);
-    font-weight: 900;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-    margin-bottom: 16px;
-    color: var(--card2);
-    text-align: center;
-    width: 100%;
-  }
-
-  .header h1 .line2 {
-    background: linear-gradient(135deg, var(--accent), var(--gold));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    display: block;
-    text-align: center;
-  }
-
-  .header p {
-    color: #5a5650;
-    font-size: 17px;
-    line-height: 1.6;
-    max-width: 560px;
-    font-weight: 300;
     margin: 0 auto;
     text-align: center;
   }
-
-  .stats-wrap {
-    margin-bottom: 0;
-    animation: fadeDown 0.6s 0.2s ease both;
-    background: linear-gradient(180deg, #3d3f52 0%, #2a2d40 40%, #1e2133 70%, #1c1f2e 100%);
-    border-radius: 0;
-    padding: 28px 40px 36px;
-    position: relative;
-    z-index: 1;
+  .badge-wrap { display: flex; justify-content: center; margin-bottom: 32px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 100px; padding: 12px 40px;
+    font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500;
   }
-
-  .stats {
-    display: flex;
-    gap: 0;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .stat {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    flex: 1;
-    align-items: center;
-    text-align: center;
-  }
-
-  .stat-value {
+  .badge-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s ease infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
+  .header { margin-bottom: 48px; text-align: center; }
+  .header h1 {
     font-family: 'Playfair Display', serif;
-    font-size: 32px;
-    font-weight: 700;
-    color: #d4b896;
-    text-shadow: 0 2px 12px rgba(212,184,150,0.3);
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    font-weight: 900; line-height: 1.1;
+    letter-spacing: -0.02em; margin-bottom: 16px; color: var(--card2);
   }
-
-  .stat-label {
-    font-size: 12px;
-    color: #8a7a68;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 600;
+  .header h1 .line2 {
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: block;
   }
-
-  .stat-divider {
-    width: 1px;
-    height: 36px;
-    background: rgba(255,255,255,0.15);
-    flex-shrink: 0;
+  .header p { color: #5a5650; font-size: 17px; line-height: 1.6; max-width: 560px; font-weight: 300; margin: 0 auto; }
+  .gradient-bridge { height: 60px; background: linear-gradient(180deg, var(--bg) 0%, #3d3f52 100%); border-radius: 20px 20px 0 0; }
+  .stats-wrap {
+    background: linear-gradient(180deg, #3d3f52 0%, #2a2d40 40%, #1e2133 70%, #1c1f2e 100%);
+    padding: 28px 40px 36px;
   }
-
+  .stats { display: flex; justify-content: center; align-items: center; }
+  .stat { display: flex; flex-direction: column; gap: 4px; flex: 1; align-items: center; }
+  .stat-value { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: #d4b896; }
+  .stat-label { font-size: 12px; color: #8a7a68; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+  .stat-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.15); }
   .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 0 0 20px 20px;
-    padding: 40px;
-    position: relative;
-    overflow: hidden;
-    animation: fadeUp 0.7s 0.3s ease both;
-    box-shadow: 0 20px 60px rgba(28,26,23,0.22), 0 4px 16px rgba(28,26,23,0.12);
-    margin-top: -2px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 0 0 20px 20px; padding: 40px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(28,26,23,0.22);
     text-align: left;
   }
-
   .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), var(--gold), transparent);
-    opacity: 0.6;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), var(--gold), transparent); opacity: 0.6;
   }
-
-  .form-grid { display: grid; gap: 20px; position: relative; z-index: 1; }
-
+  .form-grid { display: grid; gap: 20px; }
   .field { display: flex; flex-direction: column; gap: 8px; }
-
-  .field label {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #a8c4e0;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+  .field > label {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #a8c4e0; font-weight: 600; display: flex; align-items: center; gap: 6px;
   }
+  .req { color: var(--gold); font-size: 14px; }
 
-  .field label .req { color: var(--gold); font-size: 14px; line-height: 1; }
-
-  .input-wrap { position: relative; }
-
-  .input-wrap .icon {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px;
-    height: 18px;
-    color: var(--muted);
-    pointer-events: none;
-    transition: color 0.2s;
-  }
-
-  input, select {
-    width: 100%;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.09);
-    border-radius: 12px;
-    padding: 14px 16px 14px 46px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    color: var(--text);
-    outline: none;
-    transition: all 0.2s;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-
-  input::placeholder { color: rgba(113,128,150,0.6); }
-
-  input:focus, select:focus {
-    border-color: rgba(99,179,237,0.4);
-    background: rgba(99,179,237,0.06);
-    box-shadow: 0 0 0 3px rgba(99,179,237,0.08);
-  }
-
-  .input-wrap:focus-within .icon { color: var(--accent); }
-
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-
-  /* FIX 4: Proper select styling with dropdown arrow */
-  .select-wrap { position: relative; }
-  .select-arrow {
-    position: absolute; right: 14px; top: 50%;
-    transform: translateY(-50%); pointer-events: none; color: var(--muted);
-    z-index: 2;
-  }
-  select {
-    padding-right: 40px;
-    cursor: pointer;
-    width: 100%;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-  select option { background: #1c1f2e; color: var(--text); }
-
-  .upload-area {
-    border: 1.5px dashed rgba(99,179,237,0.25);
-    border-radius: 12px;
-    padding: 24px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.25s;
-    background: rgba(99,179,237,0.02);
+  /* UPLOAD — clean label approach */
+  .upload-label {
     display: block;
+    border: 1.5px dashed rgba(99,179,237,0.35);
+    border-radius: 12px; padding: 28px 24px;
+    text-align: center; cursor: pointer;
+    transition: all 0.25s;
+    background: rgba(99,179,237,0.03);
   }
-
-  .upload-area:hover, .upload-area.active {
-    border-color: rgba(99,179,237,0.5);
-    background: rgba(99,179,237,0.06);
-  }
-
-  /* file input is outside upload-area, triggered via label[for] */
-
+  .upload-label:hover { border-color: rgba(99,179,237,0.6); background: rgba(99,179,237,0.07); }
   .upload-icon {
-    width: 40px; height: 40px;
-    background: rgba(99,179,237,0.1);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 12px;
-    color: var(--accent);
-    transition: all 0.2s;
+    width: 40px; height: 40px; background: rgba(99,179,237,0.12);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px; color: var(--accent);
   }
-
-  .upload-area:hover .upload-icon, .upload-area.active .upload-icon {
-    background: rgba(99,179,237,0.18);
-  }
-
   .upload-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
   .upload-sub { font-size: 12px; color: var(--muted); }
   .upload-sub span { color: var(--accent); }
-
-  .file-info {
-    display: none; align-items: center; gap: 7px;
-    background: rgba(104,211,145,0.08);
-    border: 1px solid rgba(104,211,145,0.2);
-    border-radius: 8px; padding: 8px 12px;
-    font-size: 13px; color: var(--green); font-weight: 500; margin-top: 10px;
+  .file-chosen {
+    display: none; align-items: center; gap: 7px; margin-top: 10px;
+    background: rgba(104,211,145,0.08); border: 1px solid rgba(104,211,145,0.2);
+    border-radius: 8px; padding: 8px 12px; font-size: 13px; color: var(--green); font-weight: 500;
   }
 
+  .input-wrap { position: relative; }
+  .input-wrap .icon {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    width: 18px; height: 18px; color: var(--muted); pointer-events: none; transition: color 0.2s;
+  }
+  input[type="text"], input[type="email"], select {
+    width: 100%; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09); border-radius: 12px;
+    padding: 14px 16px 14px 46px; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; color: var(--text); outline: none; transition: all 0.2s;
+    -webkit-appearance: none; appearance: none;
+  }
+  input[type="text"]::placeholder, input[type="email"]::placeholder { color: rgba(113,128,150,0.6); }
+  input[type="text"]:focus, input[type="email"]:focus, select:focus {
+    border-color: rgba(99,179,237,0.4); background: rgba(99,179,237,0.06);
+    box-shadow: 0 0 0 3px rgba(99,179,237,0.08);
+  }
+  .input-wrap:focus-within .icon { color: var(--accent); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .divider { height: 1px; background: var(--border); margin: 4px 0; }
-
   .submit-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #2b6cb0, #3182ce);
-    border: none;
-    border-radius: 12px;
-    padding: 16px 24px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    color: white;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    gap: 10px;
-    transition: all 0.25s;
-    box-shadow: 0 4px 20px rgba(49,130,206,0.35);
-    letter-spacing: 0.01em;
+    width: 100%; background: linear-gradient(135deg, #2b6cb0, #3182ce);
+    border: none; border-radius: 12px; padding: 16px 24px;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+    color: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    gap: 10px; transition: all 0.25s; box-shadow: 0 4px 20px rgba(49,130,206,0.35);
   }
-
-  .submit-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 8px 28px rgba(49,130,206,0.45);
-    background: linear-gradient(135deg, #2c5282, #2b6cb0);
-  }
-
-  .submit-btn:active { transform: translateY(0); }
-  .submit-btn svg { transition: transform 0.2s; }
-  .submit-btn:hover svg { transform: translateX(3px); }
-
+  .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 28px rgba(49,130,206,0.45); }
   .spinner {
     display: none; width: 17px; height: 17px;
     border: 2px solid rgba(255,255,255,0.3); border-top-color: white;
     border-radius: 50%; animation: spin 0.75s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-
   .features {
-    display: flex; gap: 16px; flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 0;
-    margin-left: -40px;
-    margin-right: -40px;
-    margin-bottom: -40px;
-    padding: 32px 40px 36px;
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    margin: 12px -40px -40px; padding: 32px 40px 36px;
     border-radius: 0 0 20px 20px;
-    background: linear-gradient(180deg, #2a2d3e 0%, #232538 40%, #1a1c2b 70%, #13141f 100%);
+    background: linear-gradient(180deg, #2a2d3e 0%, #13141f 100%);
     border-top: 1px solid rgba(212,184,150,0.1);
-    position: relative;
-    z-index: 2;
   }
-
-  .feature {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 14px; color: #c8b89a; font-weight: 500;
-  }
-
-  .feature-dot {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: #a89070; flex-shrink: 0;
-  }
-
+  .feature { display: flex; align-items: center; gap: 6px; font-size: 14px; color: #c8b89a; font-weight: 500; }
+  .feature-dot { width: 5px; height: 5px; border-radius: 50%; background: #a89070; }
   .success {
     display: none; flex-direction: column; align-items: center;
     text-align: center; padding: 40px 20px; gap: 16px;
   }
-
   .success-ring {
-    width: 72px; height: 72px;
-    background: rgba(104,211,145,0.12); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--green); margin-bottom: 4px;
+    width: 72px; height: 72px; background: rgba(104,211,145,0.12);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--green);
   }
-
-  .success h3 {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px; color: var(--text); letter-spacing: -0.02em;
-  }
-
+  .success h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--text); }
   .success p { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 300px; }
-
   .success-tag {
     display: flex; align-items: center; gap: 6px;
-    background: rgba(104,211,145,0.08);
-    border: 1px solid rgba(104,211,145,0.2);
-    border-radius: 100px; padding: 6px 16px;
-    font-size: 12.5px; color: var(--green); font-weight: 500;
+    background: rgba(104,211,145,0.08); border: 1px solid rgba(104,211,145,0.2);
+    border-radius: 100px; padding: 6px 16px; font-size: 12.5px; color: var(--green); font-weight: 500;
   }
-
-  .footer {
-    margin-top: 24px;
-    text-align: center;
-    font-size: 12px;
-    color: #8c8579;
-    font-weight: 300;
-    animation: fadeUp 0.5s 0.4s ease both;
-  }
-
-  @keyframes fadeDown { from { opacity: 0; transform: translateY(-14px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-
+  .footer { margin-top: 24px; text-align: center; font-size: 12px; color: #8c8579; font-weight: 300; }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
   @media (max-width: 520px) {
     .card { padding: 24px; }
     .two-col { grid-template-columns: 1fr; }
-    .stats { gap: 20px; }
   }
 </style>
 </head>
 <body>
-
 <div class="wrapper">
 
   <div class="badge-wrap">
-    <div class="badge">
-      <span class="badge-dot"></span>
-      AI-Powered Job Search Agent
-    </div>
+    <div class="badge"><span class="badge-dot"></span>AI-Powered Job Search Agent</div>
   </div>
 
-  <!-- FIX 1: Header centered -->
   <div class="header">
-    <h1>
-      <span class="line1">Find Your Next</span><br>
-      <span class="line2">Dream Career.</span>
-    </h1>
+    <h1><span>Find Your Next</span><br><span class="line2">Dream Career.</span></h1>
     <p>Upload your resume and let our AI agent match you with the most relevant opportunities — scored, ranked, and ready to apply.</p>
   </div>
 
-  <!-- Gradient bridge -->
-  <div style="height:60px; background: linear-gradient(180deg, var(--bg) 0%, #3d3f52 100%); border-radius: 20px 20px 0 0; margin-bottom: 0;"></div>
+  <div class="gradient-bridge"></div>
 
-  <!-- Stats dark section — now only 3 stats -->
   <div class="stats-wrap">
     <div class="stats">
-      <div class="stat">
-        <span class="stat-value">10+</span>
-        <span class="stat-label">Jobs Found</span>
-      </div>
+      <div class="stat"><span class="stat-value">10+</span><span class="stat-label">Jobs Found</span></div>
       <div class="stat-divider"></div>
-      <div class="stat">
-        <span class="stat-value">AI</span>
-        <span class="stat-label">Match Score</span>
-      </div>
+      <div class="stat"><span class="stat-value">AI</span><span class="stat-label">Match Score</span></div>
       <div class="stat-divider"></div>
-      <div class="stat">
-        <span class="stat-value">Auto</span>
-        <span class="stat-label">Cover Letter</span>
-      </div>
+      <div class="stat"><span class="stat-value">Auto</span><span class="stat-label">Cover Letter</span></div>
     </div>
   </div>
 
   <div class="card">
     <form id="jobForm" class="form-grid" onsubmit="handleSubmit(event)">
 
-      <!-- Upload -->
+      <!-- UPLOAD -->
       <div class="field">
-        <label style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#a8c4e0;font-weight:600;">Resume / PDF <span style="color:#f6ad55;font-size:14px;">*</span></label>
-        <input type="file" accept=".pdf" id="resumeFile" required onchange="handleFile(this)" style="display:none;">
-        <label for="resumeFile" class="upload-area" id="uploadArea" style="display:block;cursor:pointer;">
+        <label><span>Resume / PDF</span> <span class="req">*</span></label>
+        <input type="file" accept=".pdf,application/pdf" id="resumeFile" required
+               style="display:none" onchange="handleFile(this)">
+        <label class="upload-label" for="resumeFile">
           <div class="upload-icon">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
             </svg>
           </div>
-          <div class="upload-title">Drop your resume here</div>
-          <div class="upload-sub">or <span>click to browse</span> · PDF only</div>
+          <div class="upload-title">Click here to upload your resume</div>
+          <div class="upload-sub">PDF files only</div>
         </label>
-        <div class="file-info" id="fileInfo">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          <span id="fileInfoText"></span>
+        <div class="file-chosen" id="fileChosen">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <span id="fileChosenText"></span>
         </div>
       </div>
 
-      <!-- FIX 3: "Full Name" changed to "Name" + Email -->
+      <!-- NAME + EMAIL -->
       <div class="two-col">
         <div class="field">
           <label>Name <span class="req">*</span></label>
@@ -506,7 +246,6 @@
             <input type="text" id="fullName" placeholder="e.g. John Smith" required>
           </div>
         </div>
-
         <div class="field">
           <label>Email Address <span class="req">*</span></label>
           <div class="input-wrap">
@@ -518,7 +257,7 @@
         </div>
       </div>
 
-      <!-- Job Title -->
+      <!-- JOB TITLE -->
       <div class="field">
         <label>Job Title / Role <span class="req">*</span></label>
         <div class="input-wrap">
@@ -529,7 +268,7 @@
         </div>
       </div>
 
-      <!-- FIX 4: Country dropdown fixed with proper appearance none + full list -->
+      <!-- COUNTRY + CITY -->
       <div class="two-col">
         <div class="field">
           <label>Country</label>
@@ -537,10 +276,9 @@
             <svg class="icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3"/>
             </svg>
-            <input type="text" id="country" value="United States" readonly style="color: var(--text); opacity: 0.7; cursor: default;">
+            <input type="text" id="country" value="United States" readonly style="opacity:0.7;cursor:default;">
           </div>
         </div>
-
         <div class="field">
           <label>City / Location <span class="req">*</span></label>
           <div class="input-wrap">
@@ -555,7 +293,6 @@
 
       <div class="divider"></div>
 
-      <!-- Submit -->
       <button type="submit" class="submit-btn" id="submitBtn">
         <div class="spinner" id="spinner"></div>
         <span id="btnText">Search Jobs with AI</span>
@@ -564,19 +301,15 @@
         </svg>
       </button>
 
-      <!-- Features -->
-      <div style="margin-top: 12px;">
-        <div class="features">
-          <div class="feature"><span class="feature-dot"></span>AI match scoring</div>
-          <div class="feature"><span class="feature-dot"></span>Auto cover letter</div>
-          <div class="feature"><span class="feature-dot"></span>Auto Email Notification</div>
-          <div class="feature"><span class="feature-dot"></span>Results in 1–3 min</div>
-        </div>
+      <div class="features">
+        <div class="feature"><span class="feature-dot"></span>AI match scoring</div>
+        <div class="feature"><span class="feature-dot"></span>Auto cover letter</div>
+        <div class="feature"><span class="feature-dot"></span>Auto Email Notification</div>
+        <div class="feature"><span class="feature-dot"></span>Results in 1–3 min</div>
       </div>
 
     </form>
 
-    <!-- Success -->
     <div class="success" id="successState">
       <div class="success-ring">
         <svg width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
@@ -588,12 +321,11 @@
         Agent is running
       </div>
       <h3>Search Submitted!</h3>
-      <p id="successMsg">Your AI agent is scanning thousands of listings, scoring matches, and drafting cover letters. Results will be emailed to you in 1–3 minutes.</p>
+      <p id="successMsg">Your AI agent is scanning listings and scoring matches. Results will be emailed to you in 1–3 minutes.</p>
     </div>
   </div>
 
   <div class="footer">Your search is processed securely. Results typically arrive in 1–3 minutes.</div>
-
 </div>
 
 <script>
@@ -602,23 +334,15 @@
   function handleFile(input) {
     const file = input.files[0];
     if (!file) return;
-    document.getElementById('uploadArea').classList.add('active');
-    const info = document.getElementById('fileInfo');
-    document.getElementById('fileInfoText').textContent = file.name + ' · ' + (file.size / 1024).toFixed(0) + ' KB';
-    info.style.display = 'flex';
+    document.getElementById('fileChosenText').textContent = file.name + ' · ' + (file.size / 1024).toFixed(0) + ' KB';
+    document.getElementById('fileChosen').style.display = 'flex';
   }
-
-  const area = document.getElementById('uploadArea');
-  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('active'); });
-  area.addEventListener('dragleave', () => { if (!document.getElementById('resumeFile').files.length) area.classList.remove('active'); });
-  area.addEventListener('drop', e => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file) { document.getElementById('resumeFile').files = e.dataTransfer.files; handleFile(document.getElementById('resumeFile')); }
-  });
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const file = document.getElementById('resumeFile').files[0];
+    if (!file) { alert('Please select your resume PDF first.'); return; }
+
     const btn = document.getElementById('submitBtn');
     const spinner = document.getElementById('spinner');
     const btnText = document.getElementById('btnText');
@@ -630,40 +354,35 @@
     btnText.textContent = 'Launching AI Agent…';
     btnArrow.style.display = 'none';
 
-    // Read PDF as base64 — works reliably across all browsers with webhooks
-    const file = document.getElementById('resumeFile').files[0];
-    const base64 = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result.split(',')[1]);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+    const reader = new FileReader();
+    reader.onload = async function() {
+      const base64 = reader.result.split(',')[1];
+      const payload = {
+        Full_Name: document.getElementById('fullName').value,
+        Email: document.getElementById('emailAddr').value,
+        Title: document.getElementById('jobTitle').value,
+        Country: document.getElementById('country').value,
+        Location: document.getElementById('location').value,
+        Resume_Filename: file.name,
+        Resume_Base64: base64
+      };
 
-    const payload = {
-      Full_Name: document.getElementById('fullName').value,
-      Email: document.getElementById('emailAddr').value,
-      Title: document.getElementById('jobTitle').value,
-      Country: document.getElementById('country').value,
-      Location: document.getElementById('location').value,
-      Resume_Filename: file.name,
-      Resume_Base64: base64
+      try {
+        await fetch(WORKFLOW_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch(err) { console.warn(err); }
+
+      const name = document.getElementById('fullName').value.split(' ')[0];
+      const email = document.getElementById('emailAddr').value;
+      document.getElementById('successMsg').textContent =
+        'Hi ' + name + '! Your AI agent is now scanning listings and scoring matches. Results will be sent to ' + email + ' in 1–3 minutes.';
+      document.getElementById('jobForm').style.display = 'none';
+      document.getElementById('successState').style.display = 'flex';
     };
-
-    try {
-      await fetch(WORKFLOW_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-    } catch(err) { console.warn(err); }
-
-    const name = document.getElementById('fullName').value.split(' ')[0];
-    const email = document.getElementById('emailAddr').value;
-    document.getElementById('successMsg').textContent =
-      `Hi ${name}! Your AI agent is now scanning listings and scoring matches. Results will be sent to ${email} in 1–3 minutes.`;
-
-    document.getElementById('jobForm').style.display = 'none';
-    document.getElementById('successState').style.display = 'flex';
+    reader.readAsDataURL(file);
   }
 </script>
 </body>
