@@ -641,7 +641,7 @@
     formData.append('Location', document.getElementById('location').value);
     formData.append('Your_Resume', document.getElementById('resumeFile').files[0]);
 
-    try { await fetch(WORKFLOW_URL, { method: 'POST', mode: 'no-cors', body: formData }); } catch(err) {}
+    try { await fetch(WORKFLOW_URL, { method: 'POST', body: formData }); } catch(err) { console.warn(err); }
 
     const name = document.getElementById('fullName').value.split(' ')[0];
     const email = document.getElementById('emailAddr').value;
