@@ -483,14 +483,14 @@
       <div class="field">
         <label>Resume / PDF <span class="req">*</span></label>
         <input type="file" accept=".pdf" id="resumeFile" required onchange="handleFile(this)" style="display:none;">
-        <div class="upload-area" id="uploadArea" onclick="document.getElementById('resumeFile').click()" style="cursor:pointer;">
-          <div class="upload-icon">
+        <div class="upload-area" id="uploadArea" style="cursor:pointer;">
+          <div class="upload-icon" style="pointer-events:none;">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
             </svg>
           </div>
-          <div class="upload-title">Drop your resume here</div>
-          <div class="upload-sub">or <span>click to browse</span> · PDF only</div>
+          <div class="upload-title" style="pointer-events:none;">Drop your resume here</div>
+          <div class="upload-sub" style="pointer-events:none;">or <span>click to browse</span> · PDF only</div>
         </div>
         <div class="file-info" id="fileInfo">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -612,6 +612,7 @@
   }
 
   const area = document.getElementById('uploadArea');
+  area.addEventListener('click', () => document.getElementById('resumeFile').click());
   area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('active'); });
   area.addEventListener('dragleave', () => { if (!document.getElementById('resumeFile').files.length) area.classList.remove('active'); });
   area.addEventListener('drop', e => {
