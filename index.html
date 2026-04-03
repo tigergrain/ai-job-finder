@@ -286,7 +286,7 @@
     cursor: pointer;
     transition: all 0.25s;
     background: rgba(99,179,237,0.02);
-    position: relative;
+    display: block;
   }
 
   .upload-area:hover, .upload-area.active {
@@ -479,7 +479,7 @@
       <!-- Upload -->
       <div class="field">
         <label style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#a8c4e0;font-weight:600;">Resume / PDF <span style="color:#f6ad55;font-size:14px;">*</span></label>
-        <input type="file" accept=".pdf" id="resumeFile" required onchange="handleFile(this)" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;z-index:-1;">
+        <input type="file" accept=".pdf" id="resumeFile" required onchange="handleFile(this)" style="display:none;">
         <label for="resumeFile" class="upload-area" id="uploadArea" style="display:block;cursor:pointer;">
           <div class="upload-icon">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
