@@ -95,7 +95,6 @@
   }
   .req { color: var(--gold); font-size: 14px; }
 
-  /* UPLOAD — clean label approach */
   .upload-label {
     display: block;
     border: 1.5px dashed rgba(99,179,237,0.35);
@@ -216,9 +215,13 @@
       <!-- UPLOAD -->
       <div class="field">
         <label><span>Resume / PDF</span> <span class="req">*</span></label>
+        <!-- Hidden file input — NOT inside the label to avoid nesting issues -->
         <input type="file" accept=".pdf,application/pdf" id="resumeFile" required
-               style="display:none" onchange="handleFile(this)">
-        <label class="upload-label" for="resumeFile">
+               style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"
+               onchange="handleFile(this)">
+        <!-- Clickable upload area — uses JS onclick to trigger the input -->
+        <div class="upload-label" onclick="document.getElementById('resumeFile').click()" role="button" tabindex="0"
+             onkeydown="if(event.key==='Enter'||event.key===' ')document.getElementById('resumeFile').click()">
           <div class="upload-icon">
             <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/>
@@ -226,7 +229,7 @@
           </div>
           <div class="upload-title">Click here to upload your resume</div>
           <div class="upload-sub">PDF files only</div>
-        </label>
+        </div>
         <div class="file-chosen" id="fileChosen">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -329,7 +332,9 @@
 </div>
 
 <script>
-  const WORKFLOW_URL = https://rocky51502.n8n-wsk.com/webhook/81986bb5-311a-4aec-ba57-26867ad713aa;
+  // FIX: URL must be a quoted string — missing quotes caused a JS syntax error
+  // that crashed the entire script, preventing the file picker from working.
+  const WORKFLOW_URL = "https://rocky51502.n8n-wsk.com/webhook/81986bb5-311a-4aec-ba57-26867ad713aa";
 
   function handleFile(input) {
     const file = input.files[0];
