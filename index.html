@@ -216,7 +216,9 @@
       <div class="field">
         <label><span>Resume / PDF</span> <span class="req">*</span></label>
         <!-- Hidden file input — NOT inside the label to avoid nesting issues -->
-        <input type="file" accept=".pdf,application/pdf" id="resumeFile" required
+        <!-- No "required" attr: we validate manually so native form validation
+             never blocks submission before our JS can read the file -->
+        <input type="file" accept=".pdf,application/pdf" id="resumeFile"
                style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"
                onchange="handleFile(this)">
         <!-- Clickable upload area — uses JS onclick to trigger the input -->
@@ -332,21 +334,46 @@
 </div>
 
 <script>
-  // FIX: URL must be a quoted string — missing quotes caused a JS syntax error
-  // that crashed the entire script, preventing the file picker from working.
   const WORKFLOW_URL = "https://rocky51502.n8n-wsk.com/webhook/81986bb5-311a-4aec-ba57-26867ad713aa";
+
+  // Store base64 as soon as the user picks a file — don't wait until submit
+  let resumeBase64 = null;
+  let resumeFilename = null;
 
   function handleFile(input) {
     const file = input.files[0];
     if (!file) return;
+
+    resumeBase64 = null; // reset while reading
+    resumeFilename = file.name;
+
     document.getElementById('fileChosenText').textContent = file.name + ' · ' + (file.size / 1024).toFixed(0) + ' KB';
     document.getElementById('fileChosen').style.display = 'flex';
+
+    // Read the file immediately so base64 is ready by the time the user submits
+    const reader = new FileReader();
+    reader.onload = function() {
+      resumeBase64 = reader.result.split(',')[1];
+    };
+    reader.onerror = function() {
+      alert('Failed to read the PDF. Please try selecting it again.');
+      resumeBase64 = null;
+    };
+    reader.readAsDataURL(file);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const file = document.getElementById('resumeFile').files[0];
-    if (!file) { alert('Please select your resume PDF first.'); return; }
+
+    // Manual file validation (since we removed the "required" attr)
+    if (!resumeBase64) {
+      if (document.getElementById('resumeFile').files.length === 0) {
+        alert('Please select your resume PDF first.');
+      } else {
+        alert('Still reading your PDF — please wait a moment and try again.');
+      }
+      return;
+    }
 
     const btn = document.getElementById('submitBtn');
     const spinner = document.getElementById('spinner');
@@ -359,35 +386,30 @@
     btnText.textContent = 'Launching AI Agent…';
     btnArrow.style.display = 'none';
 
-    const reader = new FileReader();
-    reader.onload = async function() {
-      const base64 = reader.result.split(',')[1];
-      const payload = {
-        Full_Name: document.getElementById('fullName').value,
-        Email: document.getElementById('emailAddr').value,
-        Title: document.getElementById('jobTitle').value,
-        Country: document.getElementById('country').value,
-        Location: document.getElementById('location').value,
-        Resume_Filename: file.name,
-        Resume_Base64: base64
-      };
-
-      try {
-        await fetch(WORKFLOW_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-      } catch(err) { console.warn(err); }
-
-      const name = document.getElementById('fullName').value.split(' ')[0];
-      const email = document.getElementById('emailAddr').value;
-      document.getElementById('successMsg').textContent =
-        'Hi ' + name + '! Your AI agent is now scanning listings and scoring matches. Results will be sent to ' + email + ' in 1–3 minutes.';
-      document.getElementById('jobForm').style.display = 'none';
-      document.getElementById('successState').style.display = 'flex';
+    const payload = {
+      Full_Name: document.getElementById('fullName').value,
+      Email: document.getElementById('emailAddr').value,
+      Title: document.getElementById('jobTitle').value,
+      Country: document.getElementById('country').value,
+      Location: document.getElementById('location').value,
+      Resume_Filename: resumeFilename,
+      Resume_Base64: resumeBase64   // guaranteed to be populated here
     };
-    reader.readAsDataURL(file);
+
+    try {
+      await fetch(WORKFLOW_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    } catch(err) { console.warn(err); }
+
+    const name = document.getElementById('fullName').value.split(' ')[0];
+    const email = document.getElementById('emailAddr').value;
+    document.getElementById('successMsg').textContent =
+      'Hi ' + name + '! Your AI agent is now scanning listings and scoring matches. Results will be sent to ' + email + ' in 1–3 minutes.';
+    document.getElementById('jobForm').style.display = 'none';
+    document.getElementById('successState').style.display = 'flex';
   }
 </script>
 </body>
