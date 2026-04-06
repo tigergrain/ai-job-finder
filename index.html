@@ -336,42 +336,22 @@
 <script>
   const WORKFLOW_URL = "https://rocky51502.n8n-wsk.com/webhook/81986bb5-311a-4aec-ba57-26867ad713aa";
 
-  // Store base64 as soon as the user picks a file — don't wait until submit
-  let resumeBase64 = null;
-  let resumeFilename = null;
+  // Store the raw File object as soon as the user picks it
+  let resumeFile = null;
 
   function handleFile(input) {
     const file = input.files[0];
     if (!file) return;
-
-    resumeBase64 = null; // reset while reading
-    resumeFilename = file.name;
-
+    resumeFile = file;
     document.getElementById('fileChosenText').textContent = file.name + ' · ' + (file.size / 1024).toFixed(0) + ' KB';
     document.getElementById('fileChosen').style.display = 'flex';
-
-    // Read the file immediately so base64 is ready by the time the user submits
-    const reader = new FileReader();
-    reader.onload = function() {
-      resumeBase64 = reader.result.split(',')[1];
-    };
-    reader.onerror = function() {
-      alert('Failed to read the PDF. Please try selecting it again.');
-      resumeBase64 = null;
-    };
-    reader.readAsDataURL(file);
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // Manual file validation (since we removed the "required" attr)
-    if (!resumeBase64) {
-      if (document.getElementById('resumeFile').files.length === 0) {
-        alert('Please select your resume PDF first.');
-      } else {
-        alert('Still reading your PDF — please wait a moment and try again.');
-      }
+    if (!resumeFile) {
+      alert('Please select your resume PDF first.');
       return;
     }
 
@@ -386,21 +366,24 @@
     btnText.textContent = 'Launching AI Agent…';
     btnArrow.style.display = 'none';
 
-    const payload = {
-      Full_Name: document.getElementById('fullName').value,
-      Email: document.getElementById('emailAddr').value,
-      Title: document.getElementById('jobTitle').value,
-      Country: document.getElementById('country').value,
-      Location: document.getElementById('location').value,
-      Resume_Filename: resumeFilename,
-      Resume_Base64: resumeBase64   // guaranteed to be populated here
-    };
+    // Use multipart/form-data — n8n receives the actual binary file
+    // AND all text fields, with no base64 encoding needed.
+    // In n8n: the file arrives as a binary attachment named "Resume_File",
+    // and text fields are accessible via $json.Full_Name, $json.Email, etc.
+    const formData = new FormData();
+    formData.append('Full_Name',  document.getElementById('fullName').value);
+    formData.append('Email',      document.getElementById('emailAddr').value);
+    formData.append('Title',      document.getElementById('jobTitle').value);
+    formData.append('Country',    document.getElementById('country').value);
+    formData.append('Location',   document.getElementById('location').value);
+    formData.append('Resume_File', resumeFile, resumeFile.name); // actual binary file
 
     try {
       await fetch(WORKFLOW_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        // Do NOT set Content-Type header — browser sets it automatically
+        // with the correct multipart boundary when using FormData
+        body: formData
       });
     } catch(err) { console.warn(err); }
 
